@@ -1,0 +1,21 @@
+name: Packer-Validate
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    name: packer-validate
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Packer GitHub Actions
+      uses: hashicorp/packer-github-actions@v0.2.0
+      with:
+        command: validate
+        arguments: -syntax-only
+        target: ami.json

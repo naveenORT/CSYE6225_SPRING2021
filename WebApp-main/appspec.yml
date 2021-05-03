@@ -1,0 +1,29 @@
+version: 0.0
+os: linux
+
+permissions:
+  - object: /home/ubuntu/csye6225-cloud/webapp/
+    owner: ubuntu
+    group: ubuntu
+
+files:             
+  - source: ./
+    destination: /home/ubuntu/csye6225-cloud/webapp/
+
+hooks:
+  ApplicationStop:
+   - location: ./codedeploy/applicationStop.sh
+     timeout: 60
+     runas: ubuntu
+  BeforeInstall:
+    - location: ./codedeploy/beforeInstall.sh
+      timeout: 60
+      runas: ubuntu    
+  AfterInstall:
+   - location: ./codedeploy/afterInstall.sh
+     timeout: 200
+     runas: ubuntu
+  ApplicationStart:
+    - location: ./codedeploy/applicationStart.sh
+      timeout: 60
+      runas: ubuntu

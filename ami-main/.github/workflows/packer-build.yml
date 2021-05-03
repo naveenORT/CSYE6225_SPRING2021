@@ -1,0 +1,29 @@
+name: Packer-Build
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    name: packer-build
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Packer GitHub Actions
+      uses: hashicorp/packer-github-actions@v0.2.0
+      with:
+        command: build
+        arguments: "-color=false -on-error=abort"
+        target: ami.json
+      env: 
+        AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+        AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
+        SUBNET_ID: ${{ secrets.SUBNET_ID }}
+        AMI_USERS: ${{ secrets.AMI_USERS }}
+        SSH_USERNAME: ${{ secrets.SSH_USERNAME }}
+        SOURCE_AMI: ${{ secrets.SOURCE_AMI }}
